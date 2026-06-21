@@ -108,3 +108,28 @@ Project Zero follows this workflow:
 9. Transition to Engineering Ready when allowed by AES-001.
 
 The workflow shall preserve evidence sufficient to explain the repository state and any accepted deferrals.
+
+## Evidence Requirements
+
+Project Zero completion shall be supported by objective engineering evidence.
+
+Evidence may include:
+
+- repository inventory,
+- documentation inventory,
+- repository manifest,
+- metadata validation results,
+- documentation validation results,
+- traceability records,
+- issue records,
+- commit history,
+- review records,
+- automation reports,
+- certification reports,
+- and accepted deferrals.
+
+Engineering evidence should be objective, traceable, reproducible, version controlled, reviewable, and machine-readable where practical.
+
+Evidence shall remain in, or be traceable to, the repository that produced it.
+
+AEMS should automatically discover, collect, validate, and report Project Zero evidence wherever practical.
