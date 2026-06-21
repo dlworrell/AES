@@ -68,6 +68,26 @@ A documented exception that permits later work to proceed while explicitly recor
 - Maintenance may transition to Archive when active support ends.
 - A repository may return to an earlier lifecycle state when evidence shows that its current state is no longer valid.
 
+## Compliance and Evidence
+
+A repository demonstrates compliance with this standard by preserving evidence for its declared lifecycle state.
+
+Acceptable evidence may include:
+
+- repository manifests,
+- Project Zero reports,
+- issue records,
+- commits,
+- review records,
+- validation reports,
+- certification reports,
+- release records,
+- or documented accepted deferrals.
+
+AEMS should use available repository evidence to determine whether the declared lifecycle state is consistent with the repository record.
+
+When evidence is missing, the repository should be treated as incomplete for the affected lifecycle state unless an accepted deferral exists.
+
 ## Core Rule
 
 A repository should not enter normal implementation work until it is Engineering Ready or has documented accepted deferrals.
