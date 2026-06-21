@@ -55,3 +55,40 @@ A documented exception that permits Project Zero to conclude while explicitly id
 ### Certification
 
 The documented determination that a repository satisfies the applicable Project Zero completion criteria and Engineering Ready requirements.
+
+## Normative Requirements
+
+The key words "shall", "shall not", "should", "should not", and "may" are to be interpreted as described in RFC 2119.
+
+### Repository Requirements
+
+- Every Catalyst-governed repository shall complete Project Zero before entering normal implementation, or shall document accepted deferrals.
+- Every repository shall identify its authoritative owner.
+- Every repository shall declare its engineering lifecycle state.
+- Every repository shall maintain a machine-readable repository manifest conforming to AES-003.
+- Every repository shall maintain an inventory of engineering artifacts.
+- Every repository shall maintain an inventory of documentation artifacts.
+
+### Documentation Requirements
+
+- Every authoritative engineering document shall have a unique identifier.
+- Every authoritative engineering document shall declare its owner, status, version, and lifecycle state.
+- Documentation shall be traceable to the issues, specifications, implementations, or evidence that justify its existence.
+
+### Traceability Requirements
+
+- Engineering artifacts shall be traceable through documented relationships.
+- Repository changes shall be traceable through version control history.
+- Accepted deferrals shall identify the deferred requirement, rationale, owner, and intended resolution.
+
+### Automation Requirements
+
+- Repository state should be machine-readable whenever practical.
+- Repository metadata should support automated inspection by AEMS.
+- Manual engineering activities should be reduced through automation where practical.
+
+### Validation Requirements
+
+- Project Zero completion shall be supported by objective engineering evidence.
+- Engineering Ready claims shall be supported by documented evidence or accepted deferrals.
+- Compliance with this standard should be independently verifiable from repository state.
