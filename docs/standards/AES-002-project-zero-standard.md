@@ -151,3 +151,11 @@ A repository shall demonstrate:
 - and accepted deferrals, if any.
 
 A repository may be declared Engineering Ready when the required Project Zero evidence exists or accepted deferrals have been approved.
+
+## Assessment
+
+Assessment compares repository evidence against this standard.
+
+Assessment reports should identify the repository, applicable standards, assessment date, findings, accepted deferrals, and evidence references.
+
+AEMS should automate assessment where practical. Engineering judgment remains with the repository owner or designated engineering authority.
