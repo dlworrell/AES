@@ -55,6 +55,19 @@ A documented exception that permits later work to proceed while explicitly recor
 - AEMS implementations should inspect lifecycle state from repository data.
 - Accepted deferrals shall identify the deferred requirement and the reason for deferral.
 
+## Lifecycle Transition Rules
+
+- Idea may transition to Program Planning when program review is needed.
+- Program Planning may transition to Project Creation when ownership and scope are identified.
+- Project Creation may transition to Project Zero when a repository exists and can be inspected.
+- Project Zero may transition to Engineering Ready when required evidence exists or accepted deferrals are documented.
+- Engineering Ready may transition to Implementation when normal engineering work is authorized.
+- Implementation may transition to Verification when claims are ready to be checked.
+- Verification may transition to Release when required evidence supports publication.
+- Release may transition to Maintenance after the released baseline is accepted.
+- Maintenance may transition to Archive when active support ends.
+- A repository may return to an earlier lifecycle state when evidence shows that its current state is no longer valid.
+
 ## Core Rule
 
 A repository should not enter normal implementation work until it is Engineering Ready or has documented accepted deferrals.
