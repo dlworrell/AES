@@ -73,6 +73,25 @@ Required documentation may include:
 
 Documentation-only changes are acceptable and encouraged when they clarify intent, provenance, or design constraints.
 
+## Documentation Authority
+
+Each Catalyst project-owned repository must declare where its authoritative development, specification, ADR, and interface documents live.
+
+Documentation authority may be:
+
+- `local`: the repository owns its own governing documents.
+- `delegated`: another Catalyst project repository owns the governing documents.
+- `transitional`: authority is temporarily centralized while documents are being split into their final repositories.
+- `external`: a repository is outside Catalyst governance and is used only as an external/reference source.
+
+Delegated or transitional authority must name the authority repository and the relevant document paths.
+
+A repository is not noncompliant merely because its authoritative documents live elsewhere, provided the delegation is explicit and traceable.
+
+External/reference repositories must not be rewritten merely to satisfy Catalyst policy.
+
+AEMS should report local, delegated, transitional, and external documentation authority separately.
+
 ## Version Everything
 
 Interfaces are versioned when compatibility matters.
