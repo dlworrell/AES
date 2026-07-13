@@ -1,0 +1,49 @@
+schema_version: 1
+repository:
+  name: AES
+  full_name: dlworrell/AES
+  role: engineering-standards-authority
+  ownership: project-owned
+  lifecycle: active
+  maturity: foundation
+  documentation_authority: local
+  authoritative_paths:
+    - README.md
+    - standards
+    - adr
+    - creed
+    - templates
+    - research
+    - case-studies
+    - references
+governance:
+  authority_repository: dlworrell/Catylist
+  authority_document: docs/adr/ADR-003-authority-chain.md
+  managed_by: dlworrell/AEMS
+  dependency_direction:
+    upstream:
+      - dlworrell/Catylist
+    downstream:
+      - dlworrell/AEMS
+      - dlworrell/repo_templates
+      - dlworrell/evo
+      - dlworrell/atarix
+      - dlworrell/JAG
+standards:
+  core:
+    - id: AES-000
+      status: foundation
+    - id: AES-DEV-001
+      path: standards/AES-DEV-001-development-principles-and-check-in-discipline.md
+      status: draft
+    - id: AES-SEC-001
+      path: standards/AES-SEC-001-secure-c-cpp-coding-rules.md
+      status: adopted
+compliance:
+  required_profiles:
+    - AES-DEV-001
+    - AES-SEC-001
+  evidence_formats:
+    - markdown
+    - json
+  waiver_policy: explicit
