@@ -66,6 +66,10 @@ AES does not own:
   AEMS evidence reporting.
 - [AES-SEC-001 — Secure C and C++ Coding Rules](standards/AES-SEC-001-secure-c-cpp-coding-rules.md)
   is `adopted` and is evaluated through AEMS adoption and security scans.
+- [AES-SEC-002 — Cross-Language, Secret, and Encrypted-Storage Boundaries](standards/AES-SEC-002-cross-language-secret-storage-boundaries.md)
+  is `draft` and defines reviewable boundaries for safe-language/native ABIs,
+  secret lifecycles, encrypted local state, platform hardening, and
+  repository-data hygiene.
 
 `aes-manifest.yaml` is the machine-readable source for repository role,
 standard status, governing relationships, and compliance expectations.
