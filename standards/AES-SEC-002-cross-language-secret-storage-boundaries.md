@@ -57,6 +57,11 @@ interface.
 - Callback contracts MUST state whether invocation is synchronous, on which
   thread or executor it occurs, and whether the callback or context is
   retained.
+- A callback declared synchronous on the calling thread MUST run before the
+  native entry point returns and MUST NOT be dispatched to a worker thread.
+  Source or AST policy and a focused thread-identity test SHOULD protect this
+  contract. An asynchronous redesign requires explicit executor marshalling
+  and a versioned interface review.
 - Constructors and destructors MUST form an explicit lifecycle pair. Failure
   paths MUST leave ownership unambiguous.
 - Unsafe pointers and FFI handles MUST NOT be treated as inherently
@@ -105,7 +110,8 @@ are documented.
 
 - Projects MUST reuse established cryptographic implementations and platform
   key stores rather than invent cryptography.
-- Keys MUST cross APIs as explicit byte buffers and lengths, not
+- Keys MUST cross APIs as read-only byte buffers and explicit lengths, such as
+  `const uint8_t *` or `const unsigned char *`, not mutable or
   null-terminated strings.
 - Keys, passwords, tokens, and recovery material MUST NOT appear in logs,
   errors, telemetry, environment variables, command-line arguments, process
@@ -114,9 +120,19 @@ are documented.
   secure-input control.
 - UI fields that contain secrets SHOULD be marked privacy-sensitive when the
   platform supports it.
-- A secret buffer has one documented owner. That owner SHOULD reduce its
-  lifetime and clear mutable project-owned bytes after use with the strongest
-  supported optimization-resistant primitive.
+- An unpersisted recovery secret MUST remain in the smallest feasible local
+  scope. Text required by a secure-input control MUST be nonpersistent and
+  cleared promptly after conversion, cancellation, and view disappearance.
+- After decoding, recovery bytes MUST be held in a localized mutable byte
+  buffer and cleared on every visible exit path immediately after the
+  synchronous cryptographic operation.
+- A secret buffer has one documented owner. Every mutable project-owned C
+  secret copy or derived key structure MUST be cleared before deallocation or
+  function return. Use `explicit_bzero()` or `memset_s()` where the admitted
+  platform supports it; otherwise use one reviewed optimization-resistant
+  erasure abstraction, such as volatile byte writes, with test or artifact
+  evidence. Code MUST NOT pretend to erase buffers owned internally by a
+  dependency.
 - Secret clearing MUST be described accurately. It does not by itself prove
   that runtime copies, swap, crash capture, core dumps, or compiler-created
   temporaries cannot contain a copy.
@@ -137,6 +153,9 @@ Confidential database protection includes more than the main database file.
 - Temporary database state MUST remain encrypted or in memory. A project using
   SQLite/SQLCipher SHOULD enforce this in both the dependency build and each
   runtime connection where supported.
+- A keyed SQLite/SQLCipher connection MUST apply its runtime temporary-storage
+  policy immediately after the key and before verification queries, schema or
+  virtual-table access, transactions, attachments, or exports.
 - Encrypted open MUST key the connection before protected data access and MUST
   fail closed without plaintext fallback.
 - Integrity and authentication checks MUST run before a restored or migrated
@@ -184,10 +203,25 @@ Apple application targets SHOULD use:
 Apple CI SHOULD inspect Mach-O flags/symbols and resolved build settings. ELF
 `-z` options MUST NOT be sent to the Darwin linker.
 
+An iOS or Mac Catalyst application importing an external confidential file
+MUST use a user-mediated file picker that returns a security-scoped URL where
+the platform requires one. The application MUST bracket validation and copying
+with security-scoped access, release that access on every exit, and stage the
+still-encrypted file only in its private protected container. Mac Catalyst MUST
+enable App Sandbox and grant user-selected files no more than read-only access
+unless a reviewed feature requires writes.
+
 Process sandboxes such as namespaces, seccomp, chroot, containers, or service
 sandboxes are deployment controls. A risk assessment SHOULD select them for
 networked, privileged, multi-user, or hostile-input services; they are not a
 portable substitute for memory and input safety.
+
+Linux and other command-line clients MUST NOT receive secrets through
+`argv`, environment variables, or process-visible command construction.
+Interactive secrets MUST come from a private TTY channel, such as `/dev/tty`
+or TTY-backed standard input, with echo disabled and the prior terminal state
+restored on every visible path. Project-owned input text and decoded byte
+buffers MUST then be cleared.
 
 ## Analysis and Dynamic Verification
 
@@ -267,14 +301,19 @@ An adopting repository MUST record:
 AEMS SHOULD ratchet this draft in reporting mode before blocking:
 
 1. detect a local cross-language/storage profile;
-2. inventory FFI bridge files and direct-call escape paths;
-3. report strict-concurrency and sanitizer settings;
-4. report encrypted temp-store, dependency-pin, and repository-hygiene
-   evidence;
-5. inspect platform release-verification evidence;
-6. baseline gaps; and
-7. block new violations after the standard is adopted and repositories have a
-   migration window.
+2. inventory FFI bridge files, direct-call escape paths, raw pointer
+   allocations, and corresponding lifecycle anchors;
+3. report callback contracts, native thread-creation paths, strict-concurrency,
+   actor isolation, and sanitizer settings;
+4. reject the AES-banned string APIs and report const key-buffer declarations,
+   owned-buffer erasure, and keyed temporary-storage ordering;
+5. report interactive secret-input, dependency-pin, repository-hygiene, and
+   private-file access evidence;
+6. inspect platform release verification and distinguish ELF runners and rules
+   from Apple build pipelines;
+7. baseline gaps; and
+8. block new violations only after the standard is adopted and repositories
+   have a migration window.
 
 AEMS owns detector implementation. AES owns these obligations. Catylist owns
 the authority relationship between them.
@@ -290,6 +329,8 @@ approval date, review date, removal condition, and affected release scope.
 - [Swift 6 data-race safety](https://www.swift.org/migration/documentation/swift-6-concurrency-migration-guide/enabledataracesafety/)
 - [Apple Keychain accessibility](https://developer.apple.com/documentation/security/ksecattraccessiblewhenunlockedthisdeviceonly)
 - [Apple App Sandbox](https://developer.apple.com/documentation/xcode/configuring-the-macos-app-sandbox)
+- [Accessing files from the macOS App Sandbox](https://developer.apple.com/documentation/security/accessing-files-from-the-macos-app-sandbox)
+- [SwiftUI file importer](https://developer.apple.com/documentation/swiftui/view/fileimporter%28ispresented%3Aallowedcontenttypes%3Aallowsmultipleselection%3Aoncompletion%3A%29)
 - [Apple sanitizer diagnostics](https://developer.apple.com/documentation/xcode/diagnosing-memory-thread-and-crash-issues-early)
 - [SQLite temporary files](https://sqlite.org/tempfiles.html)
 - [SQLite `temp_store`](https://sqlite.org/pragma.html#pragma_temp_store)
