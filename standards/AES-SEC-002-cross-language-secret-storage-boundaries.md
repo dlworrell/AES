@@ -1,6 +1,6 @@
 # AES-SEC-002: Cross-Language, Secret, and Encrypted-Storage Boundaries
 
-Status: Draft  
+Status: Adopted  
 Owner: AES  
 Scope: Catalyst applications that cross a memory-safe/native ABI, manage
 secrets, or persist confidential local state
