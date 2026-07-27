@@ -41,7 +41,7 @@ standards:
       status: adopted
     - id: AES-SEC-002
       path: standards/AES-SEC-002-cross-language-secret-storage-boundaries.md
-      status: draft
+      status: adopted
 compliance:
   required_profiles:
     - AES-DEV-001
