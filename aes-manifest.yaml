@@ -36,6 +36,9 @@ standards:
     - id: AES-DEV-001
       path: standards/AES-DEV-001-development-principles-and-check-in-discipline.md
       status: draft
+    - id: AES-BLD-001
+      path: standards/AES-BLD-001-native-build-toolchain-and-distribution-parity.md
+      status: draft
     - id: AES-SEC-001
       path: standards/AES-SEC-001-secure-c-cpp-coding-rules.md
       status: adopted
@@ -45,6 +48,7 @@ standards:
 compliance:
   required_profiles:
     - AES-DEV-001
+    - AES-BLD-001
     - AES-SEC-001
   evidence_formats:
     - markdown

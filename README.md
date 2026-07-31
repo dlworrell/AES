@@ -64,6 +64,10 @@ AES does not own:
 - [AES-DEV-001 — Development Principles and Check-In Discipline](standards/AES-DEV-001-development-principles-and-check-in-discipline.md)
   is currently `draft` and is already used through project-local profiles and
   AEMS evidence reporting.
+- [AES-BLD-001 — Native Build, Toolchain, and Distribution Parity](standards/AES-BLD-001-native-build-toolchain-and-distribution-parity.md)
+  is `draft` and defines CMake/CTest with Clang as the canonical developer and
+  analysis path, GNU Autotools with GCC as the independent portability and
+  source-distribution path, and CI parity between them.
 - [AES-SEC-001 — Secure C and C++ Coding Rules](standards/AES-SEC-001-secure-c-cpp-coding-rules.md)
   is `adopted` and is evaluated through AEMS adoption and security scans.
 - [AES-SEC-002 — Cross-Language, Secret, and Encrypted-Storage Boundaries](standards/AES-SEC-002-cross-language-secret-storage-boundaries.md)
