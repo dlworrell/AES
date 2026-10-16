@@ -83,8 +83,8 @@ Example (informative):
 
 ```yaml
 scopes:
-  - id: prime-number-suite
-    path: prime-number-suite/
+  - id: native-core
+    path: native-core/
     owner: dlworrell
     class: experimental
     lifecycle: active
@@ -92,11 +92,11 @@ scopes:
       - id: AES-SEC-001
         applicability: applicable
         evidence:
-          profile: prime-number-suite/docs/engineering/SECURE-C-CXX.md
-          waiver_log: prime-number-suite/docs/engineering/AES-SEC-001-waivers.md
-          review_dispositions: prime-number-suite/docs/engineering/AES-SEC-001-review-dispositions.json
-  - id: dice-simulation
-    path: dice-simulation/
+          profile: native-core/docs/engineering/SECURE-C-CXX.md
+          waiver_log: native-core/docs/engineering/AES-SEC-001-waivers.md
+          review_dispositions: native-core/docs/engineering/AES-SEC-001-review-dispositions.json
+  - id: analysis-scripts
+    path: analysis-scripts/
     owner: dlworrell
     class: experimental
     lifecycle: bootstrap
@@ -105,10 +105,10 @@ scopes:
         applicability: not-applicable
         reason: Python-only scope with no C or C++ surface.
     dependencies:
-      - scope: prime-number-suite
+      - scope: native-core
         kind: data
-        interface: prime-number-suite/docs/primes-json.md
-        description: Optional prime-seed input read from the primes JSON output.
+        interface: native-core/docs/output-format.md
+        description: Reads the result files that native-core produces.
 ```
 
 A Catylist governance back-pointer is planned under dlworrell/Catylist#18 and is not defined here.
