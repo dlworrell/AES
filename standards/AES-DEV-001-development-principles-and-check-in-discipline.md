@@ -154,6 +154,62 @@ A change should include, or explicitly justify the absence of:
 
 Reviewers should reject clever code that is hard to reason about when a clearer design is available.
 
+## Default-Branch Integrity
+
+Repository history is evidence. Reviewed commits, their authorship, and their
+signatures must reach the default branch unchanged and stay there.
+
+Authority: `dlworrell/Catylist` `docs/adr/ADR-0006-default-branch-protection-and-signed-commits.md`.
+
+These requirements apply to every repository that Catylist places in
+default-branch protection scope. External/reference repositories are outside
+them. In this section, MUST means required for conformance unless an approved
+waiver applies.
+
+### AES-DEV-001-R001: Verified commits
+
+Every commit that lands on a default branch MUST be signed and reported as
+verified by the hosting platform (GitHub "verified"). This applies equally to
+maintainers, AI coding agents, and automation.
+
+### AES-DEV-001-R002: No history rewriting
+
+Default-branch history MUST NOT be rewritten. Force pushes and other
+non-fast-forward updates to a default branch, and deletion of a default
+branch, are not permitted.
+
+### AES-DEV-001-R003: Pull requests only
+
+Changes MUST reach a default branch only through a pull request. Direct pushes
+to a default branch are not permitted.
+
+### AES-DEV-001-R004: Merge commits only
+
+Pull requests MUST be integrated by merge commit. Squash and rebase merges MUST
+NOT be used, so that the reviewed commits, their authorship, and their
+signatures reach the default branch unchanged.
+
+### AES-DEV-001-R005: Automation follows the same rules
+
+Automation MUST NOT push directly to a default branch. Workflows that produce
+commits MUST open a pull request instead, and the commits they produce MUST be
+verified, for example by creating them through the GitHub API rather than by a
+plain `git push` from a runner.
+
+### AES-DEV-001-R006: Existing history is preserved
+
+Existing unsigned commits MUST NOT be rewritten to satisfy R001. These
+requirements apply to new changes.
+
+### AES-DEV-001-R007: Immutable release tags
+
+Release tags matching `v*` MUST NOT be deleted, moved, or force-updated once
+created.
+
+A repository that cannot yet meet R001 MAY meet the other requirements first,
+provided the exception is recorded as a waiver in that repository with an
+expiry date.
+
 ## Observable Systems
 
 Every subsystem should expose enough state for diagnosis and recovery.
@@ -274,7 +330,8 @@ Initial checks should detect:
 - observability language;
 - recovery or failure-mode language;
 - trust-boundary or authority-model language;
-- check-in discipline guidance.
+- check-in discipline guidance;
+- default-branch protection, merge settings, release-tag protection, and commit verification state (AES-DEV-001-R001 to R007).
 
 AEMS enforcement should ratchet:
 
@@ -287,3 +344,8 @@ AEMS enforcement should ratchet:
 ## Design Principle
 
 Prefer systems that are understandable, observable, auditable, recoverable, and secure over systems that are merely clever.
+
+## Revision History
+
+- 2026-10-16: Added default-branch integrity requirements AES-DEV-001-R001 to
+  R007 per Catylist ADR-0006.
