@@ -2,7 +2,7 @@
 
 Status: Draft
 Owner: AES
-Version: 0.1.0
+Version: 0.2.0
 
 ## Purpose
 
@@ -64,6 +64,51 @@ The manifest is organized into sections for:
 - dependencies,
 - Project Zero state,
 - automation state,
-- and evidence references.
+- evidence references,
+- and, optionally, governed project scopes.
 
 AEMS should treat the manifest as the primary machine-readable entry point for repository inspection.
+
+## Standard Applicability
+
+Wherever a manifest lists the standards that govern a repository or a governed project scope, each listed standard is either applicable or explicitly not applicable.
+
+- An applicable standard should reference its adoption evidence, such as the local profile, waiver log, and review-disposition ledger the standard requires.
+- A standard that does not apply must be declared not applicable together with a reason. A governing standard is never silently omitted.
+- A not-applicable declaration is reviewable evidence. It must be revisited when the languages, surfaces, or content of the governed unit change.
+
+Field names for this form are defined in the AES-003 manifest field reference.
+
+## Governed Project Scopes
+
+A repository may declare governed project scopes, as authorized by Catylist `docs/adr/ADR-0004-governed-project-scopes.md`. A governed project scope is a top-level directory that owns its own automation logic and its own standards-adoption evidence, while the repository keeps exactly one primary class.
+
+The `scopes` declaration is optional. A manifest without it is valid, and the repository root remains the single governed unit, exactly as before this declaration existed.
+
+When scopes are declared:
+
+- each scope must declare an identifier, path, owner, primary class, lifecycle state, and governing standards;
+- each scope must declare its dependencies on other scopes, such as a data dependency on another scope's output, and declared dependencies must not be cyclic;
+- each scope path must be a distinct top-level directory; nested scopes are not permitted;
+- every governed file belongs to exactly one scope or to the repository-level remainder;
+- a scope's primary class must not grant authority beyond the repository's primary class;
+- scope-level adoption evidence, such as the profile, waiver log, and review-disposition ledger, must live under `<scope>/docs/engineering/`;
+- the manifest, the root `README.md`, root workflows, and repository-wide configuration remain repository-level obligations.
+
+Retiring a scope, for example after extraction into its own repository, removes its entry from `scopes` and should record the successor repository in the change that removes it.
+
+## Planned Fields
+
+A Catylist governance back-pointer from the manifest to the Catylist inventory is planned under dlworrell/Catylist#18. This version does not define it, and producers should not introduce ad hoc fields for it.
+
+## Related Documents
+
+- Catylist `docs/adr/ADR-0004-governed-project-scopes.md`
+- `docs/standards/AES-003-manifest-fields.md`
+- `docs/standards/AES-003-validation.md`
+- `standards/AES-SEC-001-secure-c-cpp-coding-rules.md`
+
+## Revision History
+
+- 0.2.0: Added the optional `scopes` declaration and the explicit not-applicable form for governing standards (Catylist ADR-0004). Backward compatible: manifests without `scopes` are unchanged.
+- 0.1.0: Initial draft.

@@ -40,6 +40,22 @@ Each such repository MUST maintain a local secure-coding profile that states:
 
 Repositories that do not currently contain native code SHOULD still include an adoption marker stating that any future C/C++ contribution must comply before acceptance.
 
+### Governed Project Scopes
+
+A repository MAY declare governed project scopes in its repository manifest, as defined by AES-003 and authorized by Catylist `docs/adr/ADR-0004-governed-project-scopes.md`. A repository that declares no scopes is governed by this section exactly as written above.
+
+When a repository declares governed project scopes, the obligations of this section apply per governed unit:
+
+- each declared scope that contains or may contain C or C++ code MUST inherit this standard for the files it owns;
+- each such scope MUST maintain its own local secure-coding profile, stating every item listed above, under `<scope>/docs/engineering/`;
+- each such scope MUST maintain its own waiver log, and its own review-disposition ledger where AES-SEC-001 findings are dispositioned, under `<scope>/docs/engineering/`;
+- the repository-level remainder, meaning every governed file outside all declared scopes, remains subject to this section at repository level, with the repository-level profile, waiver log, and review-disposition ledger;
+- a scope to which this standard does not apply MUST be declared not applicable in the manifest, with its reason, using the AES-003 not-applicable form. It MUST NOT be silently omitted, and the declaration MUST be revisited when the scope's languages or surfaces change.
+
+Scope-level adoption does not weaken any requirement of this standard. A scope profile MAY be stricter than this standard or than the repository-level profile. It MUST NOT relax this standard.
+
+A scope's profile, waiver log, and review-disposition ledger satisfy this section only for files owned by that scope, and only when AES-SEC-001 evaluation runs with that scope as its scan root. Until enforcement tooling supports scoped scanning, a repository that declares scopes MUST keep its repository-wide AES-SEC-001 evaluation and repository-level evidence, and scope-level evidence is supplementary.
+
 ## Banned Interfaces
 
 The following interfaces are BANNED in ordinary application, firmware, parser, emulator, and tooling code:
@@ -262,18 +278,20 @@ A waiver is required for any MUST or BANNED rule violation.
 Each waiver MUST state:
 
 - the rule being waived;
-- the repository and file path;
+- the repository, the governed project scope when the affected file belongs to one, and the file path;
 - why the exception exists;
 - the invariant that makes the code safe enough;
 - what tests, sanitizer runs, fuzzing, or review evidence covers it;
 - the owner;
 - the review date.
 
+A waiver for a file owned by a governed project scope MUST be recorded in that scope's waiver log. A waiver recorded in one scope never covers files in another scope or in the repository-level remainder, and a repository-level waiver never covers files owned by a declared scope.
+
 Waivers are not permanent design permission. They are tracked engineering debt.
 
 ## Minimum Local Profile
 
-Each adopting repository SHOULD include this minimum local policy:
+Each adopting repository, and each adopting governed project scope, SHOULD include this minimum local policy:
 
 ```text
 This repository inherits AES-SEC-001.
@@ -297,6 +315,16 @@ No new C or C++ code may be merged unless it:
 - MITRE CWE Top 25 Most Dangerous Software Weaknesses
 - CISA/NSA memory-safety guidance
 
+## Related Documents
+
+- Catylist `docs/adr/ADR-0004-governed-project-scopes.md`
+- `docs/standards/AES-003-repository-manifest-standard.md`
+- `docs/standards/AES-003-manifest-fields.md`
+
 ## Review Cadence
 
 This standard SHOULD be reviewed whenever the ecosystem adds a new native-code platform, compiler, sanitizer, target architecture, parser, emulator subsystem, firmware target, or release process.
+
+## Revision History
+
+- 2026-10-16: Scope-aware adoption. A declared governed project scope satisfies the profile, waiver, and review-disposition obligations for the files it owns; the repository-level remainder stays covered at repository level. Authority: Catylist ADR-0004.
