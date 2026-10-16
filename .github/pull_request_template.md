@@ -18,7 +18,7 @@ Describe the change and why it is needed.
 - [ ] Unsafe operations are isolated and their safety invariant is documented.
 - [ ] Static analysis, warning-clean build, sanitizer, and fuzz evidence is supplied where applicable.
 - [ ] Custom cryptography is not introduced.
-- [ ] Any exception is recorded in the repository waiver log.
+- [ ] Any exception is recorded in the waiver log of the repository, or of the governed project scope that owns the affected file.
 
 ## Evidence
 List tests, workflow runs, benchmarks, documentation, ADRs, security review, and recovery evidence.
