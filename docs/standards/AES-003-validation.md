@@ -22,6 +22,23 @@ A repository manifest should be validated for:
 - applicable standards
 - dependency references
 - evidence references
+- standard applicability entries, including a reason for every not-applicable entry
+- governed project scopes, when declared
+
+## Governed Project Scope Validation
+
+When a manifest declares `scopes`, validation should report:
+
+- duplicate scope identifiers or paths;
+- scope paths that are not top-level directories, do not exist, or are nested in another scope;
+- missing required scope fields;
+- a scope class broader in authority than the repository's primary class;
+- not-applicable standard entries without a reason;
+- scope evidence paths outside `<scope>/docs/engineering/`;
+- dependencies on undeclared scopes, and dependency cycles;
+- governed files claimed by more than one scope.
+
+A manifest without `scopes` is validated exactly as before.
 
 ## Validation Results
 
