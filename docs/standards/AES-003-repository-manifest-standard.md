@@ -2,7 +2,7 @@
 
 Status: Draft
 Owner: AES
-Version: 0.2.0
+Version: 0.3.0 (proposed)
 
 ## Purpose
 
@@ -65,7 +65,8 @@ The manifest is organized into sections for:
 - Project Zero state,
 - automation state,
 - evidence references,
-- and, optionally, governed project scopes.
+- optionally, governed project scopes,
+- and, optionally, licensing decisions.
 
 AEMS should treat the manifest as the primary machine-readable entry point for repository inspection.
 
@@ -97,6 +98,22 @@ When scopes are declared:
 
 Retiring a scope, for example after extraction into its own repository, removes its entry from `scopes` and should record the successor repository in the change that removes it.
 
+## Licensing Decisions (proposed)
+
+A repository may record its licensing decisions in an optional `licensing` declaration: the default rights holder, copyright text, and SPDX license expression for the repository, plus path overrides for content with a different rights holder or license, such as third-party data or generated reports.
+
+The declaration records decisions; it does not apply them. Per Catylist `docs/adr/ADR-0007-governed-check-in-and-shared-automation.md` §2.4, licenses are applied with SPDX expressions and the REUSE Specification (file headers, `.license` sidecars, `REUSE.toml`). When a repository has adopted REUSE, the manifest declaration and the REUSE annotations must agree, and AEMS reports any disagreement.
+
+When `licensing` is declared:
+
+- every license value must be a valid SPDX license expression;
+- every `LicenseRef-` identifier used must have its text in `LICENSES/<identifier>.txt`;
+- each override path must be relative to the repository root, and override paths must be unique;
+- when overrides overlap, the most specific path applies;
+- content owned by a third party must be marked as third-party, so that the repository owner is never presented as granting a license to it.
+
+Per ADR-0007 §2.5, this declaration is proposed for report-only use in pilot scopes. Its normative form is to be confirmed from pilot evidence before AES adopts it.
+
 ## Planned Fields
 
 A Catylist governance back-pointer from the manifest to the Catylist inventory is planned under dlworrell/Catylist#18. This version does not define it, and producers should not introduce ad hoc fields for it.
@@ -104,11 +121,14 @@ A Catylist governance back-pointer from the manifest to the Catylist inventory i
 ## Related Documents
 
 - Catylist `docs/adr/ADR-0004-governed-project-scopes.md`
+- Catylist `docs/adr/ADR-0007-governed-check-in-and-shared-automation.md`
+- [REUSE Specification](https://reuse.software/spec/) and [SPDX License List](https://spdx.org/licenses/)
 - `docs/standards/AES-003-manifest-fields.md`
 - `docs/standards/AES-003-validation.md`
 - `standards/AES-SEC-001-secure-c-cpp-coding-rules.md`
 
 ## Revision History
 
+- 0.3.0 (proposed): Adds the optional `licensing` declaration for repository default and path-override licensing decisions (Catylist ADR-0007 §2.4). Backward compatible: manifests without `licensing` are unchanged.
 - 0.2.0: Added the optional `scopes` declaration and the explicit not-applicable form for governing standards (Catylist ADR-0004). Backward compatible: manifests without `scopes` are unchanged.
 - 0.1.0: Initial draft.

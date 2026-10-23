@@ -24,6 +24,7 @@ A repository manifest should be validated for:
 - evidence references
 - standard applicability entries, including a reason for every not-applicable entry
 - governed project scopes, when declared
+- licensing decisions, when declared
 
 ## Governed Project Scope Validation
 
@@ -39,6 +40,18 @@ When a manifest declares `scopes`, validation should report:
 - governed files claimed by more than one scope.
 
 A manifest without `scopes` is validated exactly as before.
+
+## Licensing Decision Validation (proposed)
+
+When a manifest declares `licensing`, validation should report:
+
+- a missing `default` entry, or an entry missing `rights_holder`, `copyright`, or `license`;
+- license values that are not valid SPDX license expressions;
+- `LicenseRef-` identifiers without a matching `LICENSES/<identifier>.txt`;
+- override paths that are absolute, escape the repository root, do not exist, or are duplicated;
+- disagreement with the repository's REUSE annotations, when REUSE has been adopted.
+
+Until AES adopts this declaration from pilot evidence, these results are report-only (Catylist ADR-0007 §2.5).
 
 ## Validation Results
 

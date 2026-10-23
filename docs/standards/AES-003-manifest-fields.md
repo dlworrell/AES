@@ -111,4 +111,46 @@ scopes:
         description: Reads the result files that native-core produces.
 ```
 
+
+## Licensing Decisions (proposed)
+
+`licensing` is an optional top-level mapping, proposed under Catylist `docs/adr/ADR-0007-governed-check-in-and-shared-automation.md`. A manifest without `licensing` is unchanged.
+
+| Field | Required | Meaning |
+|---|---|---|
+| `default` | yes | The licensing entry for all content not matched by an override |
+| `overrides` | no | Licensing entries for specific paths; omitted or empty means none |
+
+Each licensing entry provides:
+
+| Field | Required | Meaning |
+|---|---|---|
+| `path` | overrides only | A file, or a directory with a trailing `/`, relative to the repository root |
+| `rights_holder` | yes | The person or organization holding the rights, for example `Donovan Worrell` or `King County Elections` |
+| `copyright` | yes | The copyright text as it will appear in `SPDX-FileCopyrightText`, for example `2026 Donovan Worrell` |
+| `license` | yes | An SPDX license expression, for example `Apache-2.0` or `LicenseRef-KingCounty-PublicData` |
+| `third_party` | no | `true` when the rights holder is not the repository owner; defaults to `false` |
+| `note` | no | A short explanation, for example the source of third-party data |
+
+Example (informative):
+
+```yaml
+licensing:
+  default:
+    rights_holder: Donovan Worrell
+    copyright: 2026 Donovan Worrell
+    license: Apache-2.0
+  overrides:
+    - path: election-data/input/king-county/
+      rights_holder: King County Elections
+      copyright: King County Elections
+      license: LicenseRef-KingCounty-PublicData
+      third_party: true
+      note: Public dataset published by King County Elections with no license stated.
+    - path: reports/elections/
+      rights_holder: Donovan Worrell
+      copyright: 2026 Donovan Worrell
+      license: CC-BY-4.0
+```
+
 A Catylist governance back-pointer is planned under dlworrell/Catylist#18 and is not defined here.
